@@ -8,11 +8,14 @@
 
 #import "AppDelegate.h"
 #import "WXApi.h"
+#import "TencentOpenAPI.framework/Headers/QQApiInterface.h"
 
 //注册应用是的APPID
 #define WXAPPID  @"wxb9bd182722d85fae"
 
-@interface AppDelegate ()<WXApiDelegate>
+#define QQAPPID  @"1105384223"
+
+@interface AppDelegate ()<WXApiDelegate,QQApiInterfaceDelegate>
 
 @end
 
@@ -50,14 +53,23 @@
 }
 
 -(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options{
-    
-    
-    return [WXApi handleOpenURL:url delegate:self];
+    NSLog(@"url.scheme = %@",url.scheme);
+    if ([url.scheme isEqualToString:WXAPPID]) {
+        return [WXApi handleOpenURL:url delegate:self];
+    }else if ([url.scheme isEqualToString:[NSString stringWithFormat:@"tencent%@",QQAPPID]]) {
+        return [QQApiInterface handleOpenURL:url delegate:self];
+    }else{
+        return YES;
+    }
 }
 
 #pragma mark - WXPaiDelegate 微信分享的相关回调
 
 //onReq是微信终端向第三方程序发起请求，要求第三方程序相应。第三方程序响应完后必须调用sendRsp返回。在调用sendRsp返回时，会切回到微信终端程序界面。
+/**
+ 处理来至QQ的请求
+ */
+
 -(void)onReq:(BaseReq *)req{
     
 }
@@ -74,49 +86,77 @@ WXErrCodeUnsupport  = -5,   //< 微信不支持
 };*/
 
 -(void)onResp:(BaseResp *)resp{
-    if([resp isKindOfClass:[SendMessageToWXResp class]]) {
+    
+    NSLog(@"这里响应了");
+    NSLog(@"resp = %@",resp);
+    //这里判断返回的响应类的基类是该类为微信终端SDK所有响应类的基类
+    if ([resp isKindOfClass:[BaseResp class]]) {
         
-        switch (resp.errCode) {
-            case WXSuccess:
-            {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"微信分享成功" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alert show];
-            }
-                break;
-            case WXErrCodeUserCancel:
-            {
-                NSLog(@"用户点击取消并返回");
-            }
-                break;
-            case WXErrCodeCommon:
-            {
-                NSLog(@"普通错误类型");
-            }
-                break;
-            case WXErrCodeSentFail:
-            {
-                NSLog(@"发送失败");
-            }
-                break;
-            case WXErrCodeAuthDeny:
-            {
-                NSLog(@"授权失败");
-            }
-                break;
-            case WXErrCodeUnsupport:
-            {
-                NSLog(@"微信不支持");
-            }
-                break;
-            default:
-            {
-                
-            }
-                
-                break;
-        }    
+        if([resp isKindOfClass:[SendMessageToWXResp class]]) {
+            BaseResp *resp1 = resp;
+            switch (resp1.errCode) {
+                case WXSuccess:
+                {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"微信分享成功" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                }
+                    break;
+                case WXErrCodeUserCancel:
+                {
+                    NSLog(@"用户点击取消并返回");
+                }
+                    break;
+                case WXErrCodeCommon:
+                {
+                    NSLog(@"普通错误类型");
+                }
+                    break;
+                case WXErrCodeSentFail:
+                {
+                    NSLog(@"发送失败");
+                }
+                    break;
+                case WXErrCodeAuthDeny:
+                {
+                    NSLog(@"授权失败");
+                }
+                    break;
+                case WXErrCodeUnsupport:
+                {
+                    NSLog(@"微信不支持");
+                }
+                    break;
+                default:
+                {
+                    
+                }
+                    
+                    break;
+            }    
+        }
+        
+    }else{
+        //处理来至QQ的响应
+         
+        SendMessageToQQResp *sendResp = (SendMessageToQQResp *)resp;
+        if ([sendResp.result isEqualToString:@"0"]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"成功" message:@"QQ分享成功" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"失败" message:@"QQ分享失败" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        
     }
+    
 }
 
+
+#pragma mark - QQApiInterfaceDelegate QQ分享的相关回调
+
+//处理QQ在线状态的回调
+-(void)isOnlineResponse:(NSDictionary *)response{
+    NSLog(@"response = %@",response);
+}
 
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04D040DB1D0E4E9B00739B62 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04D040DA1D0E4E9B00739B62 /* TencentOpenAPI.framework */; };
 		04E31ED21D069FED009A30D4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04E31ED11D069FED009A30D4 /* main.m */; };
 		04E31ED51D069FED009A30D4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04E31ED41D069FED009A30D4 /* AppDelegate.m */; };
 		04E31ED81D069FED009A30D4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04E31ED71D069FED009A30D4 /* ViewController.m */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		04D040DA1D0E4E9B00739B62 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		04E31ECD1D069FED009A30D4 /* Share.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Share.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04E31ED11D069FED009A30D4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		04E31ED31D069FED009A30D4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				04E31F0F1D06BB36009A30D4 /* CoreTelephony.framework in Frameworks */,
 				04E31F091D06BAC2009A30D4 /* SystemConfiguration.framework in Frameworks */,
 				04E31F0B1D06BADD009A30D4 /* libz.tbd in Frameworks */,
+				04D040DB1D0E4E9B00739B62 /* TencentOpenAPI.framework in Frameworks */,
 				04E31F0D1D06BAEA009A30D4 /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -100,6 +103,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04D040D91D0E4DBC00739B62 /* qqApi */ = {
+			isa = PBXGroup;
+			children = (
+				04D040DA1D0E4E9B00739B62 /* TencentOpenAPI.framework */,
+			);
+			name = qqApi;
+			sourceTree = "<group>";
+		};
 		04E31EC41D069FED009A30D4 = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +135,7 @@
 		04E31ECF1D069FED009A30D4 /* Share */ = {
 			isa = PBXGroup;
 			children = (
+				04D040D91D0E4DBC00739B62 /* qqApi */,
 				04E31F171D06BF37009A30D4 /* weixinApi */,
 				04E31ED31D069FED009A30D4 /* AppDelegate.h */,
 				04E31ED41D069FED009A30D4 /* AppDelegate.m */,
@@ -467,6 +479,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Share",
+				);
 				INFOPLIST_FILE = Share/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -487,6 +503,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Share",
+				);
 				INFOPLIST_FILE = Share/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -565,6 +585,7 @@
 				04E31EFC1D069FED009A30D4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		04E31EFD1D069FED009A30D4 /* Build configuration list for PBXNativeTarget "ShareTests" */ = {
 			isa = XCConfigurationList;
@@ -573,6 +594,7 @@
 				04E31EFF1D069FED009A30D4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		04E31F001D069FED009A30D4 /* Build configuration list for PBXNativeTarget "ShareUITests" */ = {
 			isa = XCConfigurationList;
@@ -581,6 +603,7 @@
 				04E31F021D069FED009A30D4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

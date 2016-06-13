@@ -9,8 +9,13 @@
 #import "ViewController.h"
 #import "WXApi.h"
 #import "WXApiObject.h"
+#import "TencentOpenAPI.framework/Headers/TencentOAuth.h"
+#import "TencentOpenAPI.framework/Headers/QQApiInterfaceObject.h"
+#import "TencentOpenAPI.framework/Headers/QQApiInterface.h"
 
-@interface ViewController ()
+#define QQAPPID  @"1105384223"
+
+@interface ViewController ()<TencentSessionDelegate>
 
 @end
 
@@ -20,6 +25,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 }
+
+//************************************
+//************************************
+//************这里是微信分享************
+//************************************
+//************************************
 - (IBAction)shareClick:(id)sender {
     
     [self SendTextImageLink:NO scene:0];
@@ -85,6 +96,71 @@
     }
     
 }
+
+
+
+//************************************
+//************************************
+//************这里是QQ分享************
+//************************************
+//************************************
+
+- (IBAction)share5:(id)sender {
+    
+    [self sendTextImageLinkToQQ:YES scene:0];
+}
+- (IBAction)share6:(id)sender {
+    
+    [self sendTextImageLinkToQQ:YES scene:1];
+}
+- (IBAction)share7:(id)sender {
+    
+   [self sendTextImageLinkToQQ:NO scene:0];
+}
+- (IBAction)share8:(id)sender {
+    
+   [self sendTextImageLinkToQQ:NO scene:1];
+}
+
+-(void)sendTextImageLinkToQQ:(BOOL)isText scene:(int)scene{
+    
+    //判断手机上有没有安装客户端
+    if (![TencentOAuth iphoneQQInstalled]) {
+        NSLog(@"请去下载");
+    }else{
+        
+        TencentOAuth *tencentOAuth = [[TencentOAuth alloc] initWithAppId:QQAPPID andDelegate:self];
+        
+        //判断是否发送纯文本
+        if (isText) {
+            
+            QQApiTextObject *newObj = [QQApiTextObject objectWithText:@"QQ分享到好友列表的测试"];
+            
+            SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:newObj];
+            
+            if (scene == 0) {
+                NSLog(@"haha - %d",[QQApiInterface sendReq:req]);
+            }else if (scene == 1) {
+                NSLog(@"haha - %d",[QQApiInterface SendReqToQZone:req]);
+            }
+            
+        }else{
+         
+            QQApiNewsObject *newObj = [QQApiNewsObject objectWithURL:[NSURL URLWithString:@"www.baidu.com"] title:@"这是标题" description:@"这是内容！这是内容！这是内容！这是内容！这是内容！这是内容！这是内容！这是内容！这是内容！这是内容！" previewImageData:UIImageJPEGRepresentation([UIImage imageNamed:@""], 1)];
+            
+            SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:newObj];
+            if (scene == 0) {
+                NSLog(@"QQ好友列表分享 - %d",[QQApiInterface sendReq:req]);
+            }else if (scene == 1) {
+                NSLog(@"QQ好友列表分享 - %d",[QQApiInterface SendReqToQZone:req]);
+            }
+            
+        }
+        
+    }
+    
+}
+
 
 
 
